@@ -1,0 +1,4 @@
+# Скрипт, завершающий эмулятор командой exit
+ls first
+exit 0
+ls never_executed

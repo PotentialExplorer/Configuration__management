@@ -1,0 +1,8 @@
+# Стартовый скрипт этапа 2: диалог, ошибки и продолжение работы
+ls
+ls -l "My Documents" 'a b'
+cd /home
+unknown_command arg
+cd a b
+ls "unclosed
+cd ~
