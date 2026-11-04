@@ -40,6 +40,20 @@ def cmd_exit(shell, args):
     return ""
 
 
+def cmd_vfs_info(shell, args):
+    """Служебная команда: показать сведения о загруженной VFS."""
+    if args:
+        raise CommandError("vfs-info: команда не принимает аргументов")
+    dirs, files, total = shell.vfs.stats()
+    return "\n".join([
+        f"имя:       {shell.vfs.name}",
+        f"источник:  {shell.vfs.source or '<в памяти>'}",
+        f"каталогов: {dirs}",
+        f"файлов:    {files}",
+        f"байт:      {total}",
+    ])
+
+
 def _stub(name, args):
     """Сформировать вывод команды-заглушки."""
     return f"{name}: args={args!r}"
@@ -49,4 +63,5 @@ COMMANDS = {
     "ls": cmd_ls,
     "cd": cmd_cd,
     "exit": cmd_exit,
+    "vfs-info": cmd_vfs_info,
 }

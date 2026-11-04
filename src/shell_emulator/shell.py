@@ -4,8 +4,9 @@ from dataclasses import dataclass
 
 from .commands import COMMANDS, CommandError
 from .parser import ParseError, parse_line
+from .vfs import VfsError, create_default_vfs
 
-DEFAULT_VFS_NAME = "default"
+USER = "user"
 
 
 @dataclass
@@ -25,23 +26,37 @@ class CommandResult:
 class Shell:
     """Состояние сеанса эмулятора и диспетчер команд."""
 
-    def __init__(self, vfs_name=DEFAULT_VFS_NAME):
-        """Создать сеанс.
-
-        :param vfs_name: имя VFS, отображаемое в заголовке окна.
-        """
-        self.vfs_name = vfs_name
+    def __init__(self, vfs=None):
+        """Создать сеанс над ``vfs`` (по умолчанию — VFS в памяти)."""
+        self.vfs = vfs if vfs is not None else create_default_vfs()
+        self.cwd = self.vfs.root
+        self.user = USER
         self.running = True
         self.exit_code = 0
 
+    @property
+    def vfs_name(self):
+        """Имя текущей VFS."""
+        return self.vfs.name
+
     def prompt(self):
         """Вернуть строку приглашения к вводу."""
-        return f"{self.vfs_name}:~$ "
+        return f"{self.user}@{self.vfs_name}:{self.cwd.path}$ "
 
     def stop(self, code=0):
         """Пометить сеанс завершённым с кодом ``code``."""
         self.running = False
         self.exit_code = code
+
+    def resolve(self, path):
+        """Найти узел VFS относительно текущего каталога.
+
+        :raises CommandError: если путь не существует.
+        """
+        try:
+            return self.vfs.resolve(path, self.cwd)
+        except VfsError as error:
+            raise CommandError(str(error)) from error
 
     def execute(self, line):
         """Разобрать и выполнить строку команды.

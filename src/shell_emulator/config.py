@@ -4,7 +4,7 @@ import argparse
 import os
 from dataclasses import dataclass
 
-from .shell import DEFAULT_VFS_NAME
+from .vfs import DEFAULT_NAME as DEFAULT_VFS_NAME
 
 
 @dataclass
