@@ -65,24 +65,23 @@ class StartupScriptTest(unittest.TestCase):
 
     def test_echo_input_and_output(self):
         """Скрипт показывает и ввод, и вывод."""
-        frontend, errors = self.run_text("ls 'a b'\n")
+        frontend, errors = self.run_text("ls '/home'\n")
         self.assertEqual(errors, 0)
-        self.assertIn(("prompt", "user@default:/$ ls 'a b'"), frontend.lines)
-        self.assertIn((None, "ls: args=['a b']"), frontend.lines)
+        self.assertIn(("prompt", "user@default:/$ ls '/home'"), frontend.lines)
+        self.assertIn((None, "user"), frontend.lines)
 
     def test_errors_are_skipped(self):
         """Ошибочные строки пропускаются, выполнение продолжается."""
-        frontend, errors = self.run_text("bad\n# comment\n\nls x\n")
+        frontend, errors = self.run_text("bad\n# comment\n\nls /tmp /home\n")
         self.assertEqual(errors, 1)
         texts = [text for _, text in frontend.lines]
         self.assertIn("[script] ошибка в строке 1: bad", texts)
-        self.assertIn("ls: args=['x']", texts)
+        self.assertIn("/tmp:\n\n/home:\nuser", texts)
 
     def test_exit_stops_script(self):
         """После exit оставшиеся строки не выполняются."""
-        frontend, _ = self.run_text("exit\nls never\n")
-        texts = [text for _, text in frontend.lines]
-        self.assertNotIn("ls: args=['never']", texts)
+        frontend, _ = self.run_text("exit\ncd /home\n")
+        self.assertEqual(frontend.shell.cwd.path, "/")
         self.assertFalse(frontend.shell.running)
 
     def test_missing_script(self):

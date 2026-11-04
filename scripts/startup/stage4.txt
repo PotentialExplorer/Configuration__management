@@ -1,0 +1,42 @@
+# Стартовый скрипт этапа 4: ls, cd, date, tree, cal
+# --- ls ---
+ls
+ls -l
+ls -la /home/user
+ls /etc/hostname
+ls /bin /etc
+ls -l "/home/user/My Documents"
+ls /no/such/dir
+ls -z
+# --- cd ---
+cd /home/user/projects
+cd emulator/src
+cd ../..
+cd ~
+cd "My Documents"
+cd
+cd /etc/hostname
+cd /missing
+cd a b
+cd /
+# --- date ---
+date
+date -u
+date +%Y-%m-%d
+date -u "+%H:%M"
+date tomorrow
+date + + +
+# --- tree ---
+tree
+tree -d
+tree /home
+tree /etc/hostname
+tree /missing
+tree -x
+# --- cal ---
+cal
+cal 2 2024
+cal 2026
+cal 13 2026
+cal abc
+cal 1 2 3
