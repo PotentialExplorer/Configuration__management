@@ -1,0 +1,11 @@
+# Стартовый скрипт этапа 3: все команды этапов 1-3 и работа с VFS
+vfs-info
+vfs-info extra
+ls
+ls -l "My Documents"
+cd /home
+cd a b
+unknown
+ls "broken
+exit not_a_number
+vfs-info

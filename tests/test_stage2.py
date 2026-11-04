@@ -67,7 +67,7 @@ class StartupScriptTest(unittest.TestCase):
         """Скрипт показывает и ввод, и вывод."""
         frontend, errors = self.run_text("ls 'a b'\n")
         self.assertEqual(errors, 0)
-        self.assertIn(("prompt", "default:~$ ls 'a b'"), frontend.lines)
+        self.assertIn(("prompt", "user@default:/$ ls 'a b'"), frontend.lines)
         self.assertIn((None, "ls: args=['a b']"), frontend.lines)
 
     def test_errors_are_skipped(self):

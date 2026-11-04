@@ -1,0 +1,16 @@
+path,type,owner,content
+/,dir,root,
+/bin,dir,root,
+/bin/sh,file,root,f0VMRgIBAQA=
+/etc,dir,root,
+/etc/hostname,file,root,dmZzLWhvc3QK
+/home,dir,root,
+/home/user,dir,user,
+/home/user/My Documents,dir,user,
+/home/user/My Documents/report.txt,file,user,UTMgcmVwb3J0Cg==
+/home/user/projects/emulator/src/main.py,file,user,cHJpbnQoJ2hpJykK
+/home/user/projects/emulator/README.md,file,user,IyBFbXVsYXRvcgo=
+/home/guest,dir,guest,
+/home/guest/todo.txt,file,guest,bm90aGluZwo=
+/tmp,dir,root,
+/tmp/cache.bin,file,root,AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+Pw==
