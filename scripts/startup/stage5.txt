@@ -1,0 +1,34 @@
+# Стартовый скрипт этапа 5: rm и chown (изменения только в памяти)
+tree
+# --- chown ---
+ls -l /home
+chown guest /home/user
+ls -l /home
+chown -v root "/home/user/My Documents/report.txt"
+chown -R -v guest /home/user/projects
+ls -l /home/user/projects/emulator
+chown -R user /home/user
+chown
+chown user
+chown Bad:Name /tmp
+chown root /missing /tmp
+chown -x root /tmp
+# --- rm ---
+rm -v /tmp/cache.bin
+ls /tmp
+rm /etc
+rm -rv /etc
+rm /nope
+rm -f /nope
+rm
+rm -f
+rm /
+rm -r /
+rm .
+rm -z /bin
+cd /home/user/projects/emulator/src
+rm -r /home/user/projects
+ls
+rm -v /bin/sh /missing /home/guest/todo.txt
+tree
+vfs-info

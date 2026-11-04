@@ -1,4 +1,4 @@
 # Скрипт, завершающий эмулятор командой exit
-ls first
+ls
 exit 0
 ls never_executed
