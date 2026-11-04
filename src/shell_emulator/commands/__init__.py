@@ -6,6 +6,7 @@
 
 from .base import CommandError
 from .info import cmd_cal, cmd_date
+from .modify import cmd_chown, cmd_rm
 from .navigation import cmd_cd, cmd_ls, cmd_tree
 from .session import cmd_exit, cmd_vfs_info
 
@@ -15,6 +16,8 @@ COMMANDS = {
     "tree": cmd_tree,
     "date": cmd_date,
     "cal": cmd_cal,
+    "rm": cmd_rm,
+    "chown": cmd_chown,
     "exit": cmd_exit,
     "vfs-info": cmd_vfs_info,
 }

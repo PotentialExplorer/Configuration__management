@@ -29,6 +29,7 @@ class Frontend:
         """Показать строку как ввод, выполнить её и вывести результат."""
         self.write(self.shell.prompt() + line, "prompt")
         result = self.shell.execute(line)
+        self.write(result.partial)
         self.write(result.output, "error" if result.error else None)
         if result.stop:
             self.on_stop()
@@ -69,4 +70,5 @@ class ConsoleFrontend(Frontend):
             except EOFError:
                 break
             result = self.shell.execute(line)
+            self.write(result.partial)
             self.write(result.output)

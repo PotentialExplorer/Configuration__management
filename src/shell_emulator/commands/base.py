@@ -5,7 +5,15 @@ END_OF_OPTIONS = "--"
 
 
 class CommandError(Exception):
-    """Ошибка выполнения команды (неверные аргументы и т. п.)."""
+    """Ошибка выполнения команды (неверные аргументы и т. п.).
+
+    :ivar partial: вывод той части работы, что успела выполниться.
+    """
+
+    def __init__(self, message, partial=""):
+        """Создать ошибку с сообщением и частичным выводом."""
+        super().__init__(message)
+        self.partial = partial
 
 
 def parse_options(name, args, allowed):

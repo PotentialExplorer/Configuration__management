@@ -19,11 +19,13 @@ class CommandResult:
     :ivar output: текст, который нужно показать пользователю.
     :ivar error: ``True``, если при выполнении произошла ошибка.
     :ivar stop: ``True``, если после команды сеанс завершён.
+    :ivar partial: обычный вывод, предшествующий сообщению об ошибке.
     """
 
     output: str
     error: bool = False
     stop: bool = False
+    partial: str = ""
 
 
 class Shell:
@@ -95,7 +97,9 @@ class Shell:
             output = handler(self, args)
             return CommandResult(output, stop=not self.running)
         except CommandError as error:
-            return CommandResult(_with_prefix(name, error), error=True)
+            return CommandResult(
+                _with_prefix(name, error), error=True, partial=error.partial
+            )
 
 
 def _with_prefix(name, error):
