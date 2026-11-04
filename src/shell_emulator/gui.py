@@ -3,21 +3,28 @@
 import tkinter as tk
 from tkinter import scrolledtext
 
+from .frontend import Frontend
+
 WINDOW_SIZE = "800x500"
 FONT = ("Courier New", 11)
 CLOSE_DELAY_MS = 300
+START_DELAY_MS = 100
 
 
-class ShellWindow:
+class ShellWindow(Frontend):
     """Окно терминала: область вывода и строка ввода."""
 
     def __init__(self, shell):
         """Создать окно для сеанса ``shell``."""
-        self.shell = shell
+        super().__init__(shell)
         self.root = tk.Tk()
-        self.root.title(f"Эмулятор оболочки — VFS: {shell.vfs_name}")
         self.root.geometry(WINDOW_SIZE)
+        self.update_title()
         self._build_widgets()
+
+    def update_title(self):
+        """Показать имя VFS в заголовке окна."""
+        self.root.title(f"Эмулятор оболочки — VFS: {self.shell.vfs_name}")
 
     def _build_widgets(self):
         """Создать и разместить виджеты окна."""
@@ -27,6 +34,7 @@ class ShellWindow:
         )
         self.output.tag_config("error", foreground="#ff6060")
         self.output.tag_config("prompt", foreground="#60ff60")
+        self.output.tag_config("info", foreground="#60a0ff")
         self.output.pack(fill=tk.BOTH, expand=True)
         bottom = tk.Frame(self.root)
         bottom.pack(fill=tk.X)
@@ -52,23 +60,25 @@ class ShellWindow:
         self.output.see(tk.END)
 
     def run_line(self, line):
-        """Показать строку как ввод, выполнить её и вывести результат.
-
-        :return: :class:`~shell_emulator.shell.CommandResult`.
-        """
-        self.write(self.shell.prompt() + line, "prompt")
-        result = self.shell.execute(line)
-        self.write(result.output, "error" if result.error else None)
+        """Выполнить строку и обновить приглашение и заголовок."""
+        result = super().run_line(line)
         self._update_prompt()
-        if not self.shell.running:
-            self.root.after(CLOSE_DELAY_MS, self.root.destroy)
+        self.update_title()
         return result
+
+    def on_stop(self):
+        """Закрыть окно после команды exit."""
+        self.root.after(CLOSE_DELAY_MS, self.root.destroy)
 
     def _on_enter(self, _event):
         """Обработать нажатие Enter в строке ввода."""
         line = self.entry.get()
         self.entry.delete(0, tk.END)
         self.run_line(line)
+
+    def schedule(self, callback):
+        """Вызвать ``callback`` после отображения окна."""
+        self.root.after(START_DELAY_MS, callback)
 
     def mainloop(self):
         """Запустить цикл обработки событий окна."""

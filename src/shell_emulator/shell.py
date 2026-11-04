@@ -14,10 +14,12 @@ class CommandResult:
 
     :ivar output: текст, который нужно показать пользователю.
     :ivar error: ``True``, если при выполнении произошла ошибка.
+    :ivar stop: ``True``, если после команды сеанс завершён.
     """
 
     output: str
     error: bool = False
+    stop: bool = False
 
 
 class Shell:
@@ -57,6 +59,7 @@ class Shell:
         if handler is None:
             return CommandResult(f"{name}: команда не найдена", error=True)
         try:
-            return CommandResult(handler(self, args))
+            output = handler(self, args)
+            return CommandResult(output, stop=not self.running)
         except CommandError as error:
             return CommandResult(str(error), error=True)
