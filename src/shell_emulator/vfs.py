@@ -25,7 +25,6 @@ TYPE_FILE = "file"
 DEFAULT_OWNER = "root"
 DEFAULT_NAME = "default"
 SEP = "/"
-HOME = "~"
 PARENT = ".."
 CURRENT = "."
 
@@ -107,12 +106,12 @@ class Vfs:
     def resolve(self, path, cwd=None):
         """Найти узел по абсолютному или относительному пути.
 
-        Поддерживаются ``.``, ``..`` и ``~`` (корень VFS).
+        Поддерживаются ``.`` и ``..``.
 
         :raises VfsError: если путь не существует.
         """
         node = cwd if cwd is not None else self.root
-        if path.startswith(SEP) or path == HOME:
+        if path.startswith(SEP):
             node = self.root
         for part in _split(path):
             node = self._step(node, part, path)
@@ -120,7 +119,7 @@ class Vfs:
 
     def _step(self, node, part, path):
         """Сделать один шаг разрешения пути от ``node``."""
-        if part in (CURRENT, HOME):
+        if part == CURRENT:
             return node
         if part == PARENT:
             return node.parent or self.root
